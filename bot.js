@@ -1,0 +1,12 @@
+const BOOKSY='https://booksy.com/en-us/1772933_status-quo-barber-lounge_barber-shop_134776_portland';
+const replies={
+ services:"Here are the main services: Fade, Edge Up, Head & Face, Design, Retwist, Hot Towel Treatment, 7-1 Facial Microdermabrasion, and Fade for Law Enforcement.",
+ prices:"Current listed prices: Fade $35, Edge Up $20, Head & Face $45, Design varies, Retwist $80+, Hot Towel Treatment $40, 7-1 Facial Microdermabrasion $80, and Fade for Law Enforcement $25.",
+ book:"Appointments are handled through Booksy so customers can see the current available times. Tap the Book on Booksy button to schedule.",
+ location:"Status Quo Barber Lounge is at 1500 NW 18th, Portland, OR 97209.",
+ hours:"The current Booksy listing shows business hours and live availability. For the most accurate appointment time, check Booksy.",
+ solo:"You're booking with Solo at Status Quo Barber Lounge.",
+ default:"I can help with services, prices, location, hours, and booking. For a live appointment, use Booksy."
+};
+function getReply(msg){const s=msg.toLowerCase();if(/book|appointment|schedule|available|time/.test(s))return replies.book;if(/price|cost|how much|service/.test(s))return replies.prices;if(/fade|retwist|edge|design|facial|towel/.test(s))return replies.services;if(/where|address|location/.test(s))return replies.location;if(/open|hours|when/.test(s))return replies.hours;if(/solo|barber/.test(s))return replies.solo;return replies.default}
+document.addEventListener('DOMContentLoaded',()=>{const toggle=document.getElementById('chat-toggle'),box=document.getElementById('chat-box'),messages=document.getElementById('chat-messages'),input=document.getElementById('chat-input'),send=document.getElementById('chat-send');if(!toggle)return;toggle.onclick=()=>box.classList.toggle('open');function add(text,who){const d=document.createElement('div');d.className='msg '+who;d.textContent=text;messages.appendChild(d);messages.scrollTop=messages.scrollHeight}function handle(text=input.value.trim()){if(!text)return;add(text,'user');input.value='';setTimeout(()=>add(getReply(text),'bot'),250)}send.onclick=handle;input.addEventListener('keydown',e=>{if(e.key==='Enter')handle()});document.querySelectorAll('[data-chat]').forEach(b=>b.onclick=()=>{box.classList.add('open');handle(b.dataset.chat)});setTimeout(()=>add("Hey — I'm Solo's customer service assistant. Ask me about services, prices, location or booking.",'bot'),350)});
